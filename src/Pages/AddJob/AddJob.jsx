@@ -11,18 +11,15 @@ const AddJob = () => {
         e.preventDefault();
 
         const formData = new FormData(e.target);
-        // console.log(formData.entries());
         const initData = Object.fromEntries(formData.entries())
-        console.log(initData);
 
         const { min, max, currency, ...newJob } = initData;
         newJob.salaryRange = { min, max, currency };
         newJob.requirements = newJob.requirements.split('\n');
         newJob.responsibilities = newJob.responsibilities.split('\n')
         newJob.status = 'active'
-        console.log(newJob);
 
-        fetch('http://localhost:5000/jobs', {
+        fetch('https://job-server-xi.vercel.app/jobs', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -31,7 +28,6 @@ const AddJob = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 if (data.insertedId) {
                     Swal.fire({
                         position: "center",

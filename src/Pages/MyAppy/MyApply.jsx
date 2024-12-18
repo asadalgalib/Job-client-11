@@ -8,25 +8,16 @@ const MyApply = () => {
     const [jobs, setJobs] = useState();
 
     useEffect(() => {
-        // fetch(`http://localhost:5000/job-application?email=${user?.email}`)
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         setJobs(data)
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     })
 
-        axios.get(`http://localhost:5000/job-application?email=${user?.email}`, { withCredentials: true })
+        axios.get(`https://job-server-xi.vercel.app/job-application?email=${user?.email}`, { withCredentials: true })
             .then(res => {
                 setJobs(res.data);
-                console.log(res.data);
             })
 
     }, [user.email])
 
     const handleDelete = (id) => {
-        fetch(`http://localhost:5000/job-application/delete/${id}`, {
+        fetch(`https://job-server-xi.vercel.app/job-application/delete/${id}`, {
             method: "DELETE"
         })
             .then(res => res.json())

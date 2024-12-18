@@ -29,9 +29,9 @@ const Register = () => {
         createUser(email, password)
             .then(result => {
                 const user = result.user.email
-                axios.post('http://localhost:5000/jwt', user, { withCredentials: true })
+                axios.post('https://job-server-xi.vercel.app/jwt', user, { withCredentials: true })
                     .then(data => {
-                        console.log(data.data)
+                        console.log('Login')
                     })
                     .catch(err => (console.log(err)))
                 form.reset();
