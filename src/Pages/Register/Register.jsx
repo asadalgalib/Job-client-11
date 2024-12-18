@@ -4,9 +4,10 @@ import resAni from '../../assets/Animation - 1733945044896.json'
 import AuthContext from '../../Context/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import SocialLogin from '../../Shared/SocialLogin';
+import axios from 'axios';
 
 const Register = () => {
-    const { createUser,user } = useContext(AuthContext);
+    const { createUser, user } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleRegister = e => {
@@ -14,6 +15,8 @@ const Register = () => {
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
+        const photo = form.PhotoURL.value;
+        const name = form.name.value;
 
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
         if (!passwordRegex.test(password)) {
@@ -25,7 +28,12 @@ const Register = () => {
 
         createUser(email, password)
             .then(result => {
-                console.log(result.user);
+                const user = result.user.email
+                axios.post('http://localhost:5000/jwt', user, { withCredentials: true })
+                    .then(data => {
+                        console.log(data.data)
+                    })
+                    .catch(err => (console.log(err)))
                 form.reset();
                 navigate('/');
             })
@@ -57,7 +65,7 @@ const Register = () => {
                                 <label className="label">
                                     <span className="label-text">Photo URL</span>
                                 </label>
-                                <input type="text" placeholder="Photo URL" name='Photo URL' className="input input-bordered" required />
+                                <input type="text" placeholder="Photo URL" name='PhotoURL' className="input input-bordered" required />
                             </div>
                             <div className="form-control">
                                 <label className="label">

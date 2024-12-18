@@ -4,6 +4,7 @@ import logani from '../../assets/Animation - 1733997500391.json'
 import AuthContext from '../../Context/AuthContext';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import SocialLogin from '../../Shared/SocialLogin';
+import axios from 'axios';
 
 const Signin = () => {
     const { loginUser, user } = useContext(AuthContext);
@@ -21,7 +22,13 @@ const Signin = () => {
         }
         loginUser(email, password)
             .then(result => {
-                console.log(result.user);
+                const user = result.user.email
+                axios.post('http://localhost:5000/jwt', user, { withCredentials: true })
+                    .then(data => {
+                        console.log(data.data)
+                    })
+                    .catch(err => (console.log(err)))
+
                 form.reset();
                 navigate(`${location?.state ? location.state : '/'}`);
             }).catch(err => {

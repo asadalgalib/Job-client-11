@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../Hooks/useAuth';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const MyApply = () => {
     const { user } = useAuth();
     const [jobs, setJobs] = useState();
 
     useEffect(() => {
-        fetch(`http://localhost:5000/job-application?email=${user?.email}`)
-            .then(res => res.json())
-            .then(data => {
-                setJobs(data)
+        // fetch(`http://localhost:5000/job-application?email=${user?.email}`)
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         setJobs(data)
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //     })
+
+        axios.get(`http://localhost:5000/job-application?email=${user?.email}`, { withCredentials: true })
+            .then(res => {
+                setJobs(res.data);
+                console.log(res.data);
             })
-            .catch(err => {
-                console.log(err);
-            })
+
     }, [user.email])
 
     const handleDelete = (id) => {
@@ -32,6 +40,8 @@ const MyApply = () => {
                         timer: 1500
                     });
                 }
+                const remaining = jobs.filter(job => id !== job._id);
+                setJobs(remaining)
             })
             .catch(err => {
                 console.log(err);
